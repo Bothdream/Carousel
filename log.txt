@@ -1,0 +1,53 @@
+/*采用匿名函数自调用，避免污染变量*/
+;(function($){
+  var Carousel = function(poster){
+      $.extend();
+      find();
+      append(this.posterItem.eq(0).clone());
+      posterItemMain.children();
+      this.posterItem.first();
+      this.posterItem.last();
+      this.nextBtn.click();
+		  this.poster.hover(function(){},function(){});
+
+  };
+  /******Carousel对象的原型*******/
+  Carousel.prototype = {
+       this.poster.attr('data-setting');
+       $.parseJSON(setting);
+       this.posterItemMain.css();
+       Math.ceil()
+       Math.ceil()
+       Math.floor() 
+       sliceItem.slice(0,sliceSize)
+       curPoster.prev().get(0) 
+       curPoster.prev()
+       zIndexArr.push(zIndex);
+       curPoster.animate({},speed,function(){});
+       this.posterItem.each(function(i){});
+       this.timer = window.setInterval(function(){ _this_.prevBtn.click();},this.setting.delay);
+
+  };
+
+
+  /*初始化多个插件*/
+  Carousel.init = function(posters){
+      var _this_ = this;//this-->Carousel
+      posters.each(function(){
+      	new _this_($(this));//this-->当前的poster
+      });
+  }  
+  /*将Carousel绑定到window对象上
+   注意：window['Carousel'] = Carousel;  一一对应 ['Carousel']--->Carousel
+   */
+  window['Carousel'] = Carousel;
+})(jQuery);
+
+1.初始化插件：prototype,this漂移
+2.设置默认参数：$.extend()
+3.配置默认参数
+4.业务逻辑：将所有li看作是整体
+5.定时器
+ /*******旋转左右帧:原理将上一帧或者下一帧的属性值，赋给当前帧*********/
+ 1.连续点击时，会出现旋转会很乱，原因是当前动画还没结束，就产生了新的动画。
+ 2.图片层级不该用动画过渡，显的很生硬，解决办法：将所有的zIndex先存起来，等动画结束后在，重新赋值。
