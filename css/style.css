@@ -55,3 +55,33 @@ body{
 
 }
 
+/*****点击****/
+.c-nav{
+	position: absolute;
+	bottom: 10px;
+	left: 50%;
+	margin-left:-300px; 
+	width: 600px;
+	height: 20px;
+	text-align: center;
+}
+.c-nav span{
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	-ms-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-o-border-radius: 50%;
+	background-color: red;
+	background-color: red \9;
+	opacity: .5;
+	filter:alpha(opacity=50);  
+	cursor: pointer;
+}
+.c-nav span.active{
+	opacity: 1;
+	filter:alpha(opacity=100); 
+}
+

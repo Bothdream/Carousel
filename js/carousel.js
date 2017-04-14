@@ -63,8 +63,16 @@
 		        window.clearInterval(self.timer);
 		   },function(){
 		        self.autoPlay();
+            $("div.c-nav > span").removeClass('active');
 		   });
       }
+
+      /********点击导航设置*********/
+      $("div.c-nav > span").click(function(){
+          $(this).addClass('active').siblings().removeClass('active');
+          var index = $(this).index()
+          self.cirTrigger(index);
+      });
 
   };
   /******Carousel对象的原型*******/
@@ -112,6 +120,15 @@
            	    left:w,
            	    zIndex:Math.floor(this.posterItem.size()/2)
            });
+           //设置点击按钮
+           var len = this.posterItem.size();
+           var zIndex = Math.ceil(len/2) + 1;
+           var nav = $("<div>").addClass('c-nav').css('zIndex',zIndex);
+           for (var i = 0; i < len; i++) {
+                $("<span>").appendTo(nav);
+           }
+           nav.appendTo(this.poster);
+           
        },
        /****设置其余帧的位置关系***/
        setPosterPos:function(){
@@ -192,6 +209,10 @@
           if(dir === 'left'){
           	  var zIndexArr = [];
               this.posterItem.each(function(){
+                 //底部按钮
+                 if(_this_.setting.posterWidth == $(this).width()){
+                       $("div.c-nav span").eq($(this).index()).addClass('active').siblings().removeClass('active');
+                 }
                  var curPoster = $(this),
                      prevPoster = curPoster.prev().get(0)? curPoster.prev():_this_.posterLastItem,
                      width = prevPoster.width(),
@@ -222,6 +243,10 @@
           if(dir === 'right'){
           	  var zIndexArr = [];
               this.posterItem.each(function(){
+                 //底部按钮
+                 if(_this_.setting.posterWidth == $(this).width()){
+                       $("div.c-nav span").eq($(this).index()).addClass('active').siblings().removeClass('active');
+                 }
               	 var curPoster = $(this),
                      nextPoster = curPoster.next().get(0)? curPoster.next():_this_.posterFirstItem,
                      width =  nextPoster.width(),
@@ -256,6 +281,46 @@
        	  this.timer = window.setInterval(function(){
              _this_.prevBtn.click();
        	  },this.setting.delay);
+       },
+
+       /*******点击圆形按钮***********/
+       cirTrigger:function(index){
+          for (var j = 0; j< this.posterItem.size(); j++) {
+             if(this.setting.posterWidth == this.posterItem.eq(j).width()){
+                   var curPoster = this.posterItem.eq(j),
+                       width =  curPoster.width(),
+                       height = curPoster.height(),
+                       zIndex = curPoster.css('zIndex'),
+                       opacity = curPoster.css('opacity'),
+                       top = curPoster.css('top'),
+                       left = curPoster.css('left');
+                  var indexItem = this.posterItem.eq(index),
+                       w =  indexItem.width(),
+                       h = indexItem.height(),
+                       zI= indexItem.css('zIndex'),
+                       op = indexItem.css('opacity'),
+                       t = indexItem.css('top'),
+                       l = indexItem.css('left');
+                  indexItem.animate({
+                       width:width,
+                       height:height,
+                       zIndex:zIndex,
+                       opacity:opacity,
+                       top:top,
+                       left:left
+                  });
+                  curPoster.animate({
+                       width:w,
+                       height:h,
+                       zIndex:zI,
+                       opacity:op,
+                       top:t,
+                       left:l
+                  });
+                   return;
+             }
+          }
+
        }
   };
 
