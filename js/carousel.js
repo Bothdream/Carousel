@@ -63,7 +63,6 @@
 		        window.clearInterval(self.timer);
 		   },function(){
 		        self.autoPlay();
-            $("div.c-nav > span").removeClass('active');
 		   });
       }
 
@@ -209,10 +208,6 @@
           if(dir === 'left'){
           	  var zIndexArr = [];
               this.posterItem.each(function(){
-                 //底部按钮
-                 if(_this_.setting.posterWidth == $(this).width()){
-                       $("div.c-nav span").eq($(this).index()).addClass('active').siblings().removeClass('active');
-                 }
                  var curPoster = $(this),
                      prevPoster = curPoster.prev().get(0)? curPoster.prev():_this_.posterLastItem,
                      width = prevPoster.width(),
@@ -243,10 +238,6 @@
           if(dir === 'right'){
           	  var zIndexArr = [];
               this.posterItem.each(function(){
-                 //底部按钮
-                 if(_this_.setting.posterWidth == $(this).width()){
-                       $("div.c-nav span").eq($(this).index()).addClass('active').siblings().removeClass('active');
-                 }
               	 var curPoster = $(this),
                      nextPoster = curPoster.next().get(0)? curPoster.next():_this_.posterFirstItem,
                      width =  nextPoster.width(),
@@ -272,7 +263,14 @@
               this.posterItem.each(function(i){
               	    $(this).css('zIndex',zIndexArr[i]); 
               });
-          }
+          } 
+          //底部按钮高亮
+          this.posterItem.each(function(){
+                if(_this_.setting.posterWidth == $(this).width()){
+                     $("div.c-nav span").eq($(this).index()).addClass('active').siblings().removeClass('active');
+               }
+          });
+
        },
        
        /******自动播放函数*****/
@@ -285,45 +283,49 @@
 
        /*******点击圆形按钮***********/
        cirTrigger:function(index){
+          var _this_ = this; 
           for (var j = 0; j< this.posterItem.size(); j++) {
-             if(this.setting.posterWidth == this.posterItem.eq(j).width()){
-                   var curPoster = this.posterItem.eq(j),
-                       width =  curPoster.width(),
-                       height = curPoster.height(),
-                       zIndex = curPoster.css('zIndex'),
-                       opacity = curPoster.css('opacity'),
-                       top = curPoster.css('top'),
-                       left = curPoster.css('left');
-                  var indexItem = this.posterItem.eq(index),
-                       w =  indexItem.width(),
-                       h = indexItem.height(),
-                       zI= indexItem.css('zIndex'),
-                       op = indexItem.css('opacity'),
-                       t = indexItem.css('top'),
-                       l = indexItem.css('left');
-                  indexItem.animate({
-                       width:width,
-                       height:height,
-                       zIndex:zIndex,
-                       opacity:opacity,
-                       top:top,
-                       left:left
-                  });
-                  curPoster.animate({
-                       width:w,
-                       height:h,
-                       zIndex:zI,
-                       opacity:op,
-                       top:t,
-                       left:l
-                  });
-                   return;
-             }
+              if(this.posterItem.eq(index).width() == this.setting.posterWidth){
+                    return;
+              }else{
+                  for (var k = 0; k< this.posterItem.size()-1; k++) {
+                         var curPoster = this.posterItem.eq(k),
+                             nextPoster = this.posterItem.eq(k+1),
+                             width =  curPoster.width(),
+                             height = curPoster.height(),
+                             zIndex = curPoster.css('zIndex'),
+                             opacity = curPoster.css('opacity'),
+                             top = curPoster.css('top'),
+                             left = curPoster.css('left'),
+                             w = nextPoster.width(),
+                             h = nextPoster.height(),
+                             zI = nextPoster.css('zIndex'),
+                             op = nextPoster.css('opacity'),
+                             t = nextPoster.css('top'),
+                             l = nextPoster.css('left');
+                         curPoster.css({
+                           width:w,
+                           height:h,
+                           zIndex:zI,
+                           opacity:op,
+                           top:t,
+                           left:l
+                         });
+                         nextPoster.css({
+                           width:width,
+                           height:height,
+                           zIndex:zIndex,
+                           opacity:opacity,
+                           top:top,
+                           left:left
+                         });
+                  }
+              }
+             
           }
 
        }
   };
-
 
   /*初始化多个插件*/
   Carousel.init = function(posters){
